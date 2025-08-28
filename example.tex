@@ -1,6 +1,6 @@
-% \documentclass[12pt,screen]{talk}
+\documentclass[12pt,screen]{talk}
 % \documentclass[12pt,slides]{talk}
-\documentclass[12pt,notes]{talk}
+% \documentclass[12pt,notes]{talk}
 
 \usepackage{sidebars}
 
@@ -23,7 +23,8 @@
 \section{First Section}
 
 \begin{slide}{My Title}
-  Stuff.\footnote{My footnote}
+  Try clicking on the section titles in the sidebar.\footnote{This is a
+  footnote.}
 \end{slide}
 \begin{notes}
   Some notes about this slide.
@@ -59,6 +60,10 @@
   \onlyslide*{1}{You can only see bullets 1 and 3.}%
   \onlyslide*{2}{You can see all bullets.}
   \onlyslide*{3}{Now bullet 3 is red.}
+\end{multislide}
+
+\begin{multislide}{2}{Another Multislide}
+  ding \fromslide{2}{dong.}
 \end{multislide}
 
 \end{document}

@@ -13,21 +13,21 @@
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
 \ProvidesClass{talk}[2006/07/11 v1.1]
 
-\def\pres@dt@notes{notes}
-\def\pres@dt@slides{slides}
-\def\pres@dt@screen{screen}
-\def\pres@doctype{}
-\newif\if@pres@rotate
+\def\talk@dt@notes{notes}
+\def\talk@dt@slides{slides}
+\def\talk@dt@screen{screen}
+\def\talk@doctype{}
+\newif\if@talk@rotate
 
-\def\@ifnotes#1#2{\ifx\pres@doctype\pres@dt@notes#1\else#2\fi}
-\def\@ifslides#1#2{\ifx\pres@doctype\pres@dt@slides#1\else#2\fi}
-\def\@ifscreen#1#2{\ifx\pres@doctype\pres@dt@screen#1\else#2\fi}
+\def\@ifnotes#1#2{\ifx\talk@doctype\talk@dt@notes#1\else#2\fi}
+\def\@ifslides#1#2{\ifx\talk@doctype\talk@dt@slides#1\else#2\fi}
+\def\@ifscreen#1#2{\ifx\talk@doctype\talk@dt@screen#1\else#2\fi}
 
-\DeclareOption{notes}{\global\let\pres@doctype\pres@dt@notes}
-\DeclareOption{slides}{\global\let\pres@doctype\pres@dt@slides}
-\DeclareOption{screen}{\global\let\pres@doctype\pres@dt@screen}
-\DeclareOption{rotate}{\@pres@rotatetrue}
-\DeclareOption{norotate}{\@pres@rotatefalse}
+\DeclareOption{notes}{\global\let\talk@doctype\talk@dt@notes}
+\DeclareOption{slides}{\global\let\talk@doctype\talk@dt@slides}
+\DeclareOption{screen}{\global\let\talk@doctype\talk@dt@screen}
+\DeclareOption{rotate}{\@talk@rotatetrue}
+\DeclareOption{norotate}{\@talk@rotatefalse}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 
 \ExecuteOptions{screen,rotate}
@@ -61,55 +61,55 @@
 
 % title and author
 %
-\def\title{\@ifnextchar[{\pres@titleii}{\pres@titlei}}
-\def\pres@titleii[#1]#2{\gdef\@title{#2}\gdef\@shorttitle{#1}}
-\def\pres@titlei#1{\pres@titleii[#1]{#1}}
-\def\author{\@ifnextchar[{\pres@authorii}{\pres@authori}}
-\def\pres@authorii[#1]#2{\gdef\@author{#2}\gdef\@shortauthor{#1}}
-\def\pres@authori#1{\pres@authorii[#1]{#1}}
+\def\title{\@ifnextchar[{\talk@titleii}{\talk@titlei}}
+\def\talk@titleii[#1]#2{\gdef\@title{#2}\gdef\@shorttitle{#1}}
+\def\talk@titlei#1{\talk@titleii[#1]{#1}}
+\def\author{\@ifnextchar[{\talk@authorii}{\talk@authori}}
+\def\talk@authorii[#1]#2{\gdef\@author{#2}\gdef\@shortauthor{#1}}
+\def\talk@authori#1{\talk@authorii[#1]{#1}}
 
 % some definitions
 %
 \newlength{\slidewidth}
 \newlength{\slideheight}
-\newlength{\pres@hadjust}
-\newlength{\pres@vadjust}
-\def\pres@currentslidestyle{}
-\def\pres@oldslidestyle{}
+\newlength{\talk@hadjust}
+\newlength{\talk@vadjust}
+\def\talk@currentslidestyle{}
+\def\talk@oldslidestyle{}
 \def\@slidetitle{}
 \def\@slidebody{}
-\long\def\pres@defslidebody#1{\long\gdef\@slidebody{#1}}
-\def\pres@slidesmag{1}
+\long\def\talk@defslidebody#1{\long\gdef\@slidebody{#1}}
+\def\talk@slidesmag{1}
 
 
 % section and subsection handling
 %
 \long\def\@tableofcontents{}
-\newcommand{\pres@artsection}[2][]{}
-\newcommand{\pres@artsubsection}[2][]{}
+\newcommand{\talk@artsection}[2][]{}
+\newcommand{\talk@artsubsection}[2][]{}
 \@ifnotes{%
-  \let\pres@artsection\section
-  \let\pres@artsubsection\subsection
+  \let\talk@artsection\section
+  \let\talk@artsubsection\subsection
 }{}
-\def\pres@addtocsection#1#2#3{%
+\def\talk@addtocsection#1#2#3{%
   \expandafter\gdef\expandafter\@tableofcontents\expandafter{\@tableofcontents\@maketocsection{#1}{#2}{#3}}%
 }
-\def\pres@addtocsubsection#1#2#3#4{%
+\def\talk@addtocsubsection#1#2#3#4{%
   \expandafter\gdef\expandafter\@tableofcontents\expandafter{\@tableofcontents\@maketocsubsection{#1}{#2}{#3}{#4}}%
 }
-\def\section{\@ifnextchar[{\@@pres@section}{\@pres@section}}
-\def\@pres@section#1{\@@pres@section[#1]{#1}}
-\def\@@pres@section[#1]#2{%
-  \pres@artsection[#1]{#2}
+\def\section{\@ifnextchar[{\@@talk@section}{\@talk@section}}
+\def\@talk@section#1{\@@talk@section[#1]{#1}}
+\def\@@talk@section[#1]#2{%
+  \talk@artsection[#1]{#2}
   \@ifnotes{}{\refstepcounter{section}}
-  \addtocontents{ttc}{\string\pres@addtocsection{\the\c@section}{#1}{#2}}
+  \addtocontents{ttc}{\string\talk@addtocsection{\the\c@section}{#1}{#2}}
 }
-\def\subsection{\@ifnextchar[{\@@pres@subsection}{\@pres@subsection}}
-\def\@pres@subsection#1{\@@pres@subsection[#1]{#1}}
-\def\@@pres@subsection[#1]#2{%
-  \pres@artsubsection[#1]{#2}
+\def\subsection{\@ifnextchar[{\@@talk@subsection}{\@talk@subsection}}
+\def\@talk@subsection#1{\@@talk@subsection[#1]{#1}}
+\def\@@talk@subsection[#1]#2{%
+  \talk@artsubsection[#1]{#2}
   \@ifnotes{}{\refstepcounter{subsection}}
-  \addtocontents{ttc}{\string\pres@addtocsubsection{\the\c@section}{\the\c@subsection}{#1}{#2}}
+  \addtocontents{ttc}{\string\talk@addtocsubsection{\the\c@section}{\the\c@subsection}{#1}{#2}}
 }
 \long\def\@ifcurrentsection#1#2#3{\ifnum\c@section=#1 #2\else#3\fi}
 \long\def\@ifcurrentsubsection#1#2#3{\ifnum\c@subsection=#1 #2\else#3\fi}
@@ -124,7 +124,7 @@
 %
 \long\def\maketitle{}
 \long\def\tableofcontents{}
-\long\def\pres@ifinrange#1#2[#3.#4-#5.#6]#7#8{%
+\long\def\talk@ifinrange#1#2[#3.#4-#5.#6]#7#8{%
   \ifnum#1=#3
     \ifnum#2<#4 #8\else #7\fi
   \else
@@ -137,12 +137,12 @@
     \fi
   \fi
 }
-\long\def\@ifinrange#1#2#3#4#5{\pres@ifinrange{#1}{#2}[#3]{#4}{#5}}
+\long\def\@ifinrange#1#2#3#4#5{\talk@ifinrange{#1}{#2}[#3]{#4}{#5}}
 
 
 % default make commands
 %
-\long\def\pres@defaultslide{%
+\long\def\talk@defaultslide{%
   \vspace*{1.2em minus 0.4em}%
   \centerline{\LARGE\@slidetitle}%
   \vspace*{1.8em minus 0.6em}%
@@ -150,50 +150,50 @@
   \vfill%
   \raggedleft\tiny\@title\ -- \theslidelabel%
 }
-\def\pres@restoredefaults{%
-  \gdef\@makeslidecontent{\pres@defaultslide}
-  \gdef\@makeslidebackground{\pres@defaultslidebackground}
-  \gdef\@makeslide{\pres@defaultslide}
+\def\talk@restoredefaults{%
+  \gdef\@makeslidecontent{\talk@defaultslide}
+  \gdef\@makeslidebackground{\talk@defaultslidebackground}
+  \gdef\@makeslide{\talk@defaultslide}
   \gdef\@makenotesslide{\par\hspace*{\fill}\@slidebox\hspace*{\fill}\par}
   \gdef\@maketocsection##1##2##3{}
   \gdef\@maketocsubsection##1##2##3##4{}
 }
-\pres@restoredefaults
+\talk@restoredefaults
 
 
 % the slide environment
 %
-\def\pres@slidebox{\raisebox\slideheight{\@makeslide}\kern\slidewidth}
+\def\talk@slidebox{\raisebox\slideheight{\@makeslide}\kern\slidewidth}
 
 \def\@slidebox{%
   \@ifslides{%
-    \scalebox{\pres@slidesmag}{%
-      \if@pres@rotate
-        \rotatebox[origin = bl]{90}{\pres@slidebox}%
+    \scalebox{\talk@slidesmag}{%
+      \if@talk@rotate
+        \rotatebox[origin = bl]{90}{\talk@slidebox}%
       \else%
-        \pres@slidebox%
+        \talk@slidebox%
       \fi%
     }%
   }{%
-    \pres@slidebox%
+    \talk@slidebox%
   }%
 }
 
-\@ifnotes{\def\pres@makeslide{\noindent\@makenotesslide}}{}
+\@ifnotes{\def\talk@makeslide{\noindent\@makenotesslide}}{}
 \@ifslides{%
-  \def\pres@makeslide{%
+  \def\talk@makeslide{%
     \vspace*{\fill}%
-    \vspace{2\pres@vadjust}
+    \vspace{2\talk@vadjust}
     \noindent%
     \hspace*{\fill}%
-    \hspace{2\pres@hadjust}
+    \hspace{2\talk@hadjust}
     \@slidebox%
     \hspace*{\fill}%
     \vspace*{\fill}%
     \newpage%
   }%
 }{}
-\@ifscreen{\def\pres@makeslide{%
+\@ifscreen{\def\talk@makeslide{%
     \noindent\@slidebox%
     \newpage%
 }}{}
@@ -202,13 +202,13 @@
 \NewEnviron{slide}[2][\@empty]{%
   \refstepcounter{slide}%
   \ifx#1\@empty%
-    \csname pres@sty@\pres@currentslidestyle\endcsname%
+    \csname talk@sty@\talk@currentslidestyle\endcsname%
   \else%
-    \csname pres@sty@#1\endcsname%
+    \csname talk@sty@#1\endcsname%
   \fi%
   \long\global\def\@slidetitle{#2}%
   \global\@ignoretrue%
-  \pres@makeslide%
+  \talk@makeslide%
 }
 \environbodyname\BODY
 
@@ -217,12 +217,12 @@
 %
 \long\def\@newslidestyle#1#2{%
   \edef\@temp{#1}%
-  \expandafter\gdef\csname pres@sty@\@temp\endcsname{%
-    \pres@restoredefaults%
+  \expandafter\gdef\csname talk@sty@\@temp\endcsname{%
+    \talk@restoredefaults%
     #2%
   }%
 }
-\newcommand{\slidestyle}[1]{\gdef\pres@currentslidestyle{#1}}
+\newcommand{\slidestyle}[1]{\gdef\talk@currentslidestyle{#1}}
 
 
 % slide and subslide numbering
@@ -231,6 +231,7 @@
 \newcounter{subslide}
 \def\theslide{\arabic{slide}}
 \def\thesubslide{\theslide.\arabic{subslide}}
+\def\theHsubslide{\thesubslide}
 \def\theslidelabel{\theslide}
 
 % overlay commands
@@ -245,7 +246,7 @@
   \long\gdef\onlyslide{\@ifnextchar*{\@onlyslidestar}{\@onlyslide}}
   \long\gdef\@onlyslide#1#2{#2}
   \long\gdef\@onlyslidestar*#1#2{#2}
-  \gdef\pres@makemultislide{\pres@makeslide}
+  \gdef\talk@makemultislide{\talk@makeslide}
 }{%
   \long\gdef\fromslide{\@ifnextchar*{\@fromslidestar}{\@fromslide}}
   \long\gdef\@fromslide#1#2{%
@@ -290,10 +291,10 @@
   }
 }
 \@ifslides{%
-  \def\pres@makemultislide{%
+  \def\talk@makemultislide{%
     \setcounter{subslide}{0}%
     \def\theslidelabel{\thesubslide}
-    \multido{}{\pres@msmax}{%
+    \multido{}{\talk@msmax}{%
       \refstepcounter{subslide}%
       \vspace*{\fill}%
       \noindent%
@@ -306,10 +307,10 @@
   }%
 }{}
 \@ifscreen{%
-  \def\pres@makemultislide{%
+  \def\talk@makemultislide{%
     \setcounter{subslide}{0}%
     \def\theslidelabel{\thesubslide}
-    \multido{}{\pres@msmax}{%
+    \multido{}{\talk@msmax}{%
       \refstepcounter{subslide}
       \noindent\@slidebox%
       \newpage%
@@ -321,14 +322,14 @@
 \NewEnviron{multislide}[3][\@empty]{%
   \refstepcounter{slide}%
   \ifx#1\@empty%
-    \csname pres@sty@\pres@currentslidestyle\endcsname%
+    \csname talk@sty@\talk@currentslidestyle\endcsname%
   \else%
-    \csname pres@sty@#1\endcsname%
+    \csname talk@sty@#1\endcsname%
   \fi%
   \long\global\def\@slidetitle{#3}%
-  \global\def\pres@msmax{#2}%
+  \global\def\talk@msmax{#2}%
   \global\@ignoretrue%
-  \pres@makemultislide%
+  \talk@makemultislide%
 }
 \environbodyname\BODY
 
@@ -341,7 +342,7 @@
 \AtBeginDocument{%
   \AtBeginDvi{\special{papersize=\the\paperwidth,\the\paperheight}}%
 }
-\def\pres@removemargins{%
+\def\talk@removemargins{%
   \setlength\oddsidemargin{-1in}%
   \setlength\evensidemargin{-1in}%
   \setlength\topmargin{-1in}%
@@ -358,19 +359,19 @@
   \@ifscreen{%
     \setlength\paperwidth\slidewidth%
     \setlength\paperheight\slideheight%
-    \pres@removemargins%
+    \talk@removemargins%
   }{}%
-  \@ifslides{\pres@removemargins}{}%
+  \@ifslides{\talk@removemargins}{}%
 }
-\def\slidesmag#1{\gdef\pres@slidesmag{#1}}
+\def\slidesmag#1{\gdef\talk@slidesmag{#1}}
 \def\slidesadjust#1#2{%
-  \if@pres@rotate
-    \setlength{\pres@hadjust}{#2}%
-    \setlength{\pres@vadjust}{#1}%
-    \setlength{\pres@vadjust}{-\pres@vadjust}%
+  \if@talk@rotate
+    \setlength{\talk@hadjust}{#2}%
+    \setlength{\talk@vadjust}{#1}%
+    \setlength{\talk@vadjust}{-\talk@vadjust}%
   \else
-    \setlength{\pres@hadjust}{#1}%
-    \setlength{\pres@vadjust}{#2}%
+    \setlength{\talk@hadjust}{#1}%
+    \setlength{\talk@vadjust}{#2}%
   \fi
 }
 
