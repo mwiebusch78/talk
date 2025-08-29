@@ -74,6 +74,8 @@
 \newlength{\slideheight}
 \newlength{\talk@hadjust}
 \newlength{\talk@vadjust}
+\newlength{\talk@pdfpaperwidth}
+\newlength{\talk@pdfpaperheight}
 \def\talk@currentslidestyle{}
 \def\talk@oldslidestyle{}
 \def\@slidetitle{}
@@ -151,8 +153,6 @@
   \raggedleft\tiny\@title\ -- \theslidelabel%
 }
 \def\talk@restoredefaults{%
-  \gdef\@makeslidecontent{\talk@defaultslide}
-  \gdef\@makeslidebackground{\talk@defaultslidebackground}
   \gdef\@makeslide{\talk@defaultslide}
   \gdef\@makenotesslide{\par\hspace*{\fill}\@slidebox\hspace*{\fill}\par}
   \gdef\@maketocsection##1##2##3{}
@@ -163,7 +163,12 @@
 
 % the slide environment
 %
-\def\talk@slidebox{\raisebox\slideheight{\@makeslide}\kern\slidewidth}
+\long\def\talk@slidebox{%
+  \begin{minipage}[t][\slideheight]{\slidewidth}%
+    \@makeslide%
+  \end{minipage}%
+}
+% \raisebox\slideheight{\@makeslide}\kern\slidewidth}
 
 \def\@slidebox{%
   \@ifslides{%
@@ -340,7 +345,8 @@
 % size settings
 %
 \AtBeginDocument{%
-  \AtBeginDvi{\special{papersize=\the\paperwidth,\the\paperheight}}%
+  \AtBeginDvi{\special{%
+    papersize=\the\talk@pdfpaperwidth,\the\talk@pdfpaperheight}}%
 }
 \def\talk@removemargins{%
   \setlength\oddsidemargin{-1in}%
@@ -359,6 +365,8 @@
   \@ifscreen{%
     \setlength\paperwidth\slidewidth%
     \setlength\paperheight\slideheight%
+    \setlength\talk@pdfpaperwidth{1.00375\paperwidth}%
+    \setlength\talk@pdfpaperheight{1.00375\paperheight}%
     \talk@removemargins%
   }{}%
   \@ifslides{\talk@removemargins}{}%
