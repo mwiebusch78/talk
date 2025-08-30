@@ -1,0 +1,142 @@
+%% talk-simple.sty -- (talk-simple.sty) style file
+%% A style package for the talk class
+%% Author: Martin Wiebusch
+%%
+%% This file may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{talk-simple}
+
+% Use the cmbright font.
+\RequirePackage{cmbright}
+
+\ProcessOptions\relax
+
+% Create a unit length for the slides.
+% You can easily resize your slides by changing this.
+\newlength{\sim@unit}
+\setlength{\sim@unit}{1in}
+
+% Set the slide size and magnification.
+% (The magnification factor is only used in slides mode.)
+\@slidesize{8\sim@unit}{4.5\sim@unit}
+\slidesmag{1.2}
+
+% Command for changing the title color.
+% This defines a color sim@title which we use inside \@newslidestyle.
+\newcommand{\titlecolor}[1]{\definecolor{sim@title}{rgb}{#1}}
+\titlecolor{0,0,0.7}
+
+% Create the \comment command.
+% The comment text appears on the title slide below the author.
+% Use it, for example for \comment{in collaboration with...}
+\def\@comment{}
+\newcommand{\comment}[1]{\gdef\@comment{#1}}
+
+% Create the \titlelogo command.
+\def\@titlelogo{}
+\newcommand{\titlelogo}[1]{\gdef\@titlelogo{#1}}
+
+% Define the default slide style.
+\@newslidestyle{default}{%
+  % All you have to do is redefine the \@makeslide command.
+  \renewcommand{\@makeslide}{%
+    % We start with the current point in the top-left corner of the slide.
+    %
+    % If you want graphical elements like a background image you can place
+    % them here using the \shiftbox command. \shiftbox doesn't move the current
+    % point, so you can use \shiftbox as often as you like without messing up
+    % the relative positioning.
+    %
+    % Here we just put the title and body of the slide in a minipage and
+    % use a single \shiftbox command to position the minipage some distance away
+    % from the edges of the slide.
+    \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
+      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
+        % Typeset the title in large font and the desired color.
+        {\parskip=0pt\color{sim@title}\LARGE\@slidetitle\par}%
+        % Add some glue so that the body appears vertically centered
+        % in the remaining space.
+        \vspace*{1.5em plus 1fil}%
+        % Typeset the body in normal font with some extra space around
+        % paragraphs.
+        {\parskip=1.5ex plus0.5ex minus0.5ex\@slidebody\par}%
+        \vspace*{0pt plus 1fil}%
+      \end{minipage}%
+    }%
+  }%
+}
+
+% Define the 'notitle' slide style.
+% Same as above, but now we just don't print the title.
+\@newslidestyle{notitle}{%
+  \renewcommand{\@makeslide}{
+    \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
+      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
+        \vspace*{\fill}\@slidebody\vspace*{\fill}%
+      \end{minipage}%
+    }%
+  }%
+}
+
+% Define the 'onlytitle' slide style.
+% Same again, but now we just print the title centered vertically and
+% horizontally
+\@newslidestyle{onlytitle}{%
+  \renewcommand{\@makeslide}{
+    \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
+      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
+        \vspace*{\fill}%
+        \centering\color{sim@title}\LARGE\@slidetitle\par%
+        \vspace*{\fill}%
+      \end{minipage}%
+    }%
+  }%
+}
+
+% Define the \makeslidetitle command.
+% Somewhat confusingly, the best style for this is the 'notitle' style.
+\newcommand{\maketitleslide}{%
+  \begin{slide}[notitle]{}
+    \centering%
+    {\color{sim@title}\LARGE\@title\par}\vspace{3em}%
+    {\large\@author\par\vspace{0.5em}{\small\@comment}\par\vspace{1.5em}%
+     \@titlelogo\par}%
+    \vspace{1.5em}%
+    {\large\@date\par}
+  \end{slide}%
+}
+
+% Redefine the \@makenotesslide command.
+% When printing notes we want to draw a box around our slides and
+% shrink them a bit so that they fit on the page.
+\renewcommand{\@makenotesslide}{%
+  \centering\fboxsep=0pt\fbox{\scalebox{0.7}{\@slidebox}}\par\bigskip%
+}
+
+% Let's also make the page a bit wider when printing notes.
+\@ifnotes{%
+  \addtolength{\textwidth}{1in}
+  \addtolength{\oddsidemargin}{-0.5in}
+}{}
+
+% Set the default slide style to 'default'.
+\slidestyle{default}
+
+% Some final tweaks. Paragraph indentations don't look that great on slides,
+% so let's get rid of them. The \sloppy command tells TeX to be a bit more
+% relaxed about overfull or underfull boxes.
+\setlength{\parindent}{0pt}
+\sloppy
+
+% Let's also redefine the \emph command to use red colour rather than italic
+% font to emphasise things.
+\definecolor{emphcolor}{rgb}{0.7,0,0}
+\renewcommand{\emph}[1]{\textcolor{emphcolor}{#1}}
+

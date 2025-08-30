@@ -152,9 +152,10 @@
   \vfill%
   \raggedleft\tiny\@title\ -- \theslidelabel%
 }
+\def\@makenotesslide{\par\hspace*{\fill}\@slidebox\hspace*{\fill}\par}
 \def\talk@restoredefaults{%
   \gdef\@makeslide{\talk@defaultslide}
-  \gdef\@makenotesslide{\par\hspace*{\fill}\@slidebox\hspace*{\fill}\par}
+%   \gdef\@makenotesslide{\par\hspace*{\fill}\@slidebox\hspace*{\fill}\par}
   \gdef\@maketocsection##1##2##3{}
   \gdef\@maketocsubsection##1##2##3##4{}
 }

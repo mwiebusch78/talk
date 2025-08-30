@@ -1,0 +1,46 @@
+\documentclass[12pt,screen]{talk}
+% \documentclass[12pt,slides]{talk}
+% \documentclass[12pt,notes]{talk}
+
+\usepackage{talk-simple}
+
+
+\title{My Test Talk}
+\author[John Doe]{John Doe\thanks{Some institute.}}
+\comment{in collaboration with Someone Else}
+
+
+\begin{document}
+\maketitleslide
+
+\begin{slide}{My Title}
+  Stuff.
+
+  Another paragraph.
+\end{slide}
+
+\begin{notes}
+  Some notes about this slide.
+\end{notes}
+
+\begin{slide}[notitle]{You can't see the title.}
+  This slide has not title and more space for content.
+\end{slide}
+
+\begin{slide}[onlytitle]{This slide shows only the title}
+  Now you can't see the body.
+\end{slide}
+
+\begin{multislide}{3}{Multislide Example}
+  A few bullet points:
+  \begin{itemize}
+  \item Bullet 1
+  \fromslide{2}{\item Bullet 2}
+  {\onlyslide*{3}{\color{red}}\item Bullet 3}
+  \end{itemize}
+  \onlyslide*{1}{You can only see bullets 1 and 3.}%
+  \onlyslide*{2}{You can see all bullets.}
+  \onlyslide*{3}{Now bullet 3 is red.}
+\end{multislide}
+
+\end{document}

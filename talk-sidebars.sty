@@ -18,10 +18,13 @@
 
 \ProcessOptions\relax
 
+\RequirePackage{cmbright}
 \RequirePackage[hidelinks]{hyperref}
 
-\@slidesize{6in}{4.5in}
-\slidesmag{1.5}
+\newlength{\sb@unit}
+\setlength{\sb@unit}{1in}
+\@slidesize{8\sb@unit}{4.5\sb@unit}
+\slidesmag{1.2}
 
 \newcommand{\backgroundcolor}[1]{\definecolor{sb@bg}{rgb}{#1}}
 \newcommand{\sidebarcolor}[1]{\definecolor{sb@sb}{rgb}{#1}}
@@ -42,25 +45,25 @@
         \color{sb@bg}
         \pgfrect[fill]{\pgfpoint{\z@}{-\slideheight}}{\pgfpoint\slidewidth\slideheight}%
         \color{sb@sb}%
-        \pgfrect[fill]{\pgfpoint{5in}{-\slideheight}}{\pgfpoint{1in}\slideheight}%
+        \pgfrect[fill]{\pgfpoint{6.8\sb@unit}{-\slideheight}}{\pgfpoint{1.2\sb@unit}\slideheight}%
         \@ifscreen{}{%
           \color{black}%
           \pgfrect[stroke]{\pgfpoint{\z@}{-\slideheight}}{\pgfpoint\slidewidth\slideheight}%
         }%
       \end{pgfpicture}
     }%
-    \shiftbox[tl]{5.1in}{-0.2in}{%
-      \begin{minipage}[t][4.2in]{0.8in}%
-        \sffamily\tiny%
-        {\centering\tiny\sffamily\textcolor{sb@sbt}{\@shorttitle}\par%
+    \shiftbox[tl]{6.9\sb@unit}{-0.2\sb@unit}{%
+      \begin{minipage}[t][4.1\sb@unit]{1\sb@unit}%
+        \tiny%
+        {\centering\tiny\textcolor{sb@sbt}{\@shorttitle}\par%
          \vspace{1em}\@shortauthor\par\vspace{2em}}%
         {\parskip=0.8em\@tableofcontents}%
         {\vfill\hspace*{\fill}p. \theslidelabel\hspace*{\fill}}%
       \end{minipage}%
     }%
-    \shiftbox[tl]{0.2in}{-0.2in}{%
-      \begin{minipage}[t][4.1in]{4.6in}%
-        \sffamily{\color{sb@title}\LARGE\@slidetitle\par}%
+    \shiftbox[tl]{0.2\sb@unit}{-0.2\sb@unit}{%
+      \begin{minipage}[t][4.1\sb@unit]{6.4\sb@unit}%
+        {\color{sb@title}\LARGE\@slidetitle\par}%
         \vspace*{1.5em plus 1fill}%
         \parskip=1.5ex plus0.5ex minus0.5ex\@slidebody\par%
         \vspace*{0pt plus 1fill}%
@@ -111,8 +114,8 @@
         }%
       \end{pgfpicture}%
     }%
-    \shiftbox[tl]{0.2in}{-0.2in}{%
-      \begin{minipage}[t][4.1in]{5.6in}%
+    \shiftbox[tl]{0.2\sb@unit}{-0.2\sb@unit}{%
+      \begin{minipage}[t][4.1\sb@unit]{7.6\sb@unit}%
         \vspace*{\fill}\@slidebody\vspace*{\fill}%
       \end{minipage}%
     }%
@@ -126,17 +129,16 @@
         \color{sb@bg}
         \pgfrect[fill]{\pgfpoint\z@\z@}{\pgfpoint\slidewidth\slideheight}%
         \color{sb@sb}
-        \pgfrect[fill]{\pgfpoint\z@\z@}{\pgfpoint{0.5in}\slideheight}%
-        \pgfrect[fill]{\pgfpoint{5.5in}\z@}{\pgfpoint{0.5in}\slideheight}%
+        \pgfrect[fill]{\pgfpoint\z@\z@}{\pgfpoint{0.6\sb@unit}\slideheight}%
+        \pgfrect[fill]{\pgfpoint{7.4\sb@unit}\z@}{\pgfpoint{0.6\sb@unit}\slideheight}%
         \@ifscreen{}{%
           \color{black}%
           \pgfrect[stroke]{\pgfpoint\z@\z@}{\pgfpoint\slidewidth\slideheight}%
         }%
       \end{pgfpicture}%
     }%
-    \shiftbox[tl]{0.7in}{-0.2in}{%
-      \begin{minipage}[b][4.1in][t]{4.6in}%
-        \sffamily%
+    \shiftbox[tl]{0.8\sb@unit}{-0.2\sb@unit}{%
+      \begin{minipage}[b][4.1\sb@unit][t]{6.4\sb@unit}%
         {\centering\LARGE\color{sb@title}\@slidetitle\par}%
         \vspace*{1.5em plus 1fill}\@slidebody\par%
         \vspace*{0pt plus 1fill}%
@@ -146,7 +148,6 @@
 }
 
 \renewcommand{\maketitle}{%
-  \sffamily%
   {\centering%
     {\color{sb@sbt}\LARGE\@title\par}\vspace{3em}%
     {\large\@author\par}\vspace{1.5em}%
@@ -173,6 +174,11 @@
   \egroup
 }
 
+\renewcommand{\@makenotesslide}{%
+  \par\hspace*{\fill}%
+  \scalebox{0.7}{\@slidebox}%
+  \hspace*{\fill}\par\bigskip%
+}
 \@ifnotes{%
   \addtolength{\textwidth}{1in}
   \addtolength{\oddsidemargin}{-0.5in}
