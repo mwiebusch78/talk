@@ -29,7 +29,7 @@
 \slidesmag{1.2}
 
 % Command for changing the title color.
-% This defines a color sim@title which we use inside \@newslidestyle.
+% This defines a color sim@title which we use inside \@newlayout.
 \newcommand{\titlecolor}[1]{\definecolor{sim@title}{rgb}{#1}}
 \titlecolor{0,0,0.7}
 
@@ -44,7 +44,7 @@
 \newcommand{\titlelogo}[1]{\gdef\@titlelogo{#1}}
 
 % Define the default slide style.
-\@newslidestyle{default}{%
+\@newlayout{default}{%
   % All you have to do is redefine the \@makeslide command.
   \renewcommand{\@makeslide}{%
     % We start with the current point in the top-left corner of the slide.
@@ -75,7 +75,7 @@
 
 % Define the 'notitle' slide style.
 % Same as above, but now we just don't print the title.
-\@newslidestyle{notitle}{%
+\@newlayout{notitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
       \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
@@ -88,7 +88,7 @@
 % Define the 'onlytitle' slide style.
 % Same again, but now we just print the title centered vertically and
 % horizontally
-\@newslidestyle{onlytitle}{%
+\@newlayout{onlytitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
       \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
@@ -127,7 +127,7 @@
 }{}
 
 % Set the default slide style to 'default'.
-\slidestyle{default}
+\layout{default}
 
 % Some final tweaks. Paragraph indentations don't look that great on slides,
 % so let's get rid of them. The \sloppy command tells TeX to be a bit more

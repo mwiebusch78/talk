@@ -10,10 +10,7 @@
 
 
 \begin{document}
-
-\begin{slide}[plain]{}
-  \maketitle
-\end{slide}
+\maketitleslide
 
 \begin{slide}[outline]{My Table of Contents}
   \tableofcontents
@@ -30,35 +27,50 @@
 \end{notes}
 
 \subsection{First Subsection}
+
 \begin{slide}{Another Title}
-  More stuff.
+  \shiftbox{3em}{5em}{With \texttt{\textbackslash shiftbox}}
+  \shiftbox{6em}{-5em}{you can position text and graphics}
+  \shiftbox{20em}{2em}{anywhere on the slide.}
 \end{slide}
-\begin{slide}{Yet Another Title}
-  Even more stuff.
+
+\begin{slide}[nosidebar]{Yet Another Title}
+  \twocolumn[0.7]{c}{
+    This slide has no sidebar.
+  }{%
+    We also used \texttt{\textbackslash twocolumn}
+
+    to give it a two-column layout.
+  }
 \end{slide}
 
 \subsection{Second Subsection}
+
 \begin{slide}{First Slide in Second Subsection}
   Blah blah bla...
+\end{slide}
+
+\begin{slide}[notitle]{You can't see this}
+  This slide has not title and no sidebar to make lots of space for content.
 \end{slide}
 
 \section{Second Section}
 
 \begin{slide}{A Slide in Section Two}
-  ...you get the idea.
+  Even more stuff.
 \end{slide}
 
 \subsection{Subsection 2.1}
 \begin{multislide}{3}{Multislide Example}
   A few bullet points:
   \begin{itemize}
-  \item Bullet 1
-  \fromslide{2}{\item Bullet 2}
+  \item Bullet 1%
+  \fromslide{2}{\item Bullet 2}%
   {\onlyslide*{3}{\color{red}}\item Bullet 3}
   \end{itemize}
   \onlyslide*{1}{You can only see bullets 1 and 3.}%
-  \onlyslide*{2}{You can see all bullets.}
-  \onlyslide*{3}{Now bullet 3 is red.}
+  \onlyslide*{2}{You can see all bullets.}%
+  \onlyslide*{3}{Now bullet 3 is red.}%
 \end{multislide}
 
 \begin{multislide}{2}{Another Multislide}

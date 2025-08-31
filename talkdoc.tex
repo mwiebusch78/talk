@@ -29,8 +29,9 @@
 
 \renewenvironment{quote}{\list{}{\leftmargin\parindent}\item[]}{\endlist}
 
-\title{The \pkg{talk} Document Class\thanks{This file has version number 1.0,
-    last revised 2005/08/09}}
+\newcommand{\lastupdated}{31 August 2025}
+\title{The \pkg{talk} Document Class\thanks{This file has version number 2.0,
+    last revised \lastupdated}}
 \author{Martin Wiebusch}
 
 \sloppy
@@ -42,18 +43,25 @@
   presentations or printing on transparencies. It also allows you to print
   personal notes for your talk. You can create overlays and display structure
   information (current section / subsection, table of contents) on your slides.
-  The main feature that distinguishes \pkg{talk} from other presentation classes
-  like \pkg{beamer} or \pkg{prosper} is that it allows the user to define an
-  arbitrary number of \emph{slide styles} and switch between these styles from
-  slide to slide. This way the slide layout can be adapted to the slide
-  content. For example, the title or contents page of a talk can be given a
-  slightly different layout than the other slides.
+  The main feature that distinguishes \pkg{talk} from other presentation
+  classes like \pkg{beamer}, \pkg{prosper} or \pkg{powerdot} is that it allows
+  the user to define an arbitrary number of \emph{layouts} and switch between
+  these layouts from slide to slide. For examle, the default layout of the
+  \pkg{talk-sidebars} style shows a (navigatable) table of contents in a bar on
+  the right side of each slide, but it also provides a |nosidebar| layout
+  where the sidebar is removed to make space for more content. This way you can
+  present information in different formats but still maintain a consistent
+  design throughout your presentation.
 
-  The \pkg{talk} class makes no restrictions on the slide design whatsoever. The
-  entire look and feel of the presentation can be defined by the user. The style
-  definitions should be put in a separate sty file. Currently the package comes
-  with only one set of pre-defined slide styles (sidebars.sty). Contributions
-  from people who are artistically more gifted than me are more than welcome!
+  The \pkg{talk} class makes no restrictions on the slide design whatsoever.
+  The entire look and feel of the presentation can be defined by the user. The
+  style definitions should be put in a separate sty file. Currently the package
+  comes with two pre-defined slide styles: |talk-simple.sty| and
+  |talk-sidebars.sty|. The former is a simple design for short talks while
+  the latter is better for longer seminars with content structured into
+  sections and subsections. Customising your presentation style is easy and
+  |talk-simple.sty| contains lots of comments to guide you through the
+  process.
 \end{abstract}
 \newpage
 \tableofcontents
@@ -65,14 +73,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %
-The \pkg{talk} class requires the packages \pkg{amsmath}, \pkg{pgf} version 1.18
-or above, \pkg{multido} and \pkg{hyperref}. They can all be obtained from
+The \pkg{talk} class requires the packages \pkg{environ}, \pkg{pgf} version
+1.18 or above, \pkg{graphicx}, \pkg{xstring} and \pkg{multido}. The
+|talk-sidebars| style additionally requires \pkg{hyperref}. They can all be
+obtained from
 \begin{quote}
   |http://www.ctan.org|.
 \end{quote}
 
-To install the \pkg{talk} class, you have to copy the files |talk.cls| and
-|sidebars.sty| to a place where \LaTeX\ can find them.
+To install the \pkg{talk} class, you have to copy the files |talk.cls|,
+|talk-simple.sty| and |talk-sidebars.sty| to a place where \LaTeX\ can find
+them.
 %
 %
 %
@@ -184,7 +195,7 @@ this mode the slides are inserted in the flowing text, between your annotations.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Style Packages and Slide Styles}
+\subsection{Style Packages and Layouts}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 Style definitions for the \pkg{talk} class are most conveniently included
@@ -193,41 +204,61 @@ usual |\usepackage| command:
 \begin{quote}
   |\usepackage[|\var{package-options}|]{|\var{style-package}|}|.
 \end{quote}
-The available package options depend on the chosen style package. The principal
-task of a \pkg{talk} style package is to set the width and height of the slides
-and define a number of \emph{slide styles}. To identify the different slide
-styles, the style package should give them \emph{style names} like |title|,
-|framed|, |sidebar|, |plain|, etc.  \DescribeMacro{\slidestyle} To switch
-between different slide styles you can use the command
+By convention, \pkg{talk} style package names should start with |talk-|, e.g.\
+|talk-simple| or |talk-sidebars|.  The available package options depend on the
+chosen style package. The principal task of a \pkg{talk} style package is to
+set the width and height of the slides and define a number of \emph{layouts}.
+\DescribeMacro{\layout} To switch between different slide styles you can
+use the command
 \begin{quote}
-  |\slidestyle{|\var{style-name}|}|.
+  |\layout{|\var{layout-name}|}|.
 \end{quote}
-To change the slide style for only one slide you can pass a style name as an
+To change the layout for only one slide you can pass a layout name as an
 optional argument to the |slide| or |multislide| environment.
 
-\DescribeMacro{sidebars} The |sidebars| package has one option, |compress|,
-which affects the way in which the table of contents is displayed in the
-sidebar. It defines three slide styles called |plain|, |outline| and
-|normal|. The |plain| style has no decorations at all and can be used for the
-title page or for showing large pictures. The |outline| style is designed to
-show the structure of your talk. Use it, for example, for the contents page.
-The |normal| style should be used for all other slides. It has a sidebar showing
-the structure of your talk. The current section is highlighted.
+\DescribeMacro{talk-simple} The |talk-simple| style package provides a simple
+but appealing design for short presentations. It defines a |default| layout for
+regular slides, a |notitle| layout where the slide title is removed to make
+more space for content and a |onlytitle| layout where the slide body is not
+shown and only the slide title is printed centered on the slide. (The latter
+is useful for emphasising the start of a new topic.) \DescribeMacro{\titlecolor}
+You can customise the colour of the title with the |\titlecolor| command. The
+syntax is
+\begin{quote}
+  |\titlecolor{|\var{red-value}|,|\var{green-value}|,|%
+     \var{blue-value}|}|
+\end{quote}
+where \var{red-value}, \var{green-value} and \var{blue-value} are numbers
+between 0 and 1.
+
+For further customisations (like adding background images or defining new
+layouts) you can simply copy the file |talk-simple.sty| and modify it. It's
+easier than you might think.  The file contains lots of comments which guide
+you through the process. More information about style packages can be found
+in \mref{section}{sec:styles}.
+
+\DescribeMacro{talk-sidebars} The |talk-sidebars| style package is intended for
+longer presentations like seminar talks which consist of multiple sections and
+sub-sections. It displays the table of contents in a sidebar on the right of
+each slide and highlights the (sub-)section that you are currently in. It uses
+the \pkg{hyperref} package to make the sidebar \emph{navigatable}: you can jump
+to a different section or sub-section by clicking on the title in the sidebar.
+The style package has one option, |compress|, which affects the way in which
+sections and sub-sections are displayed in the sidebar. It defines defines a
+|default| layout for regular slides, an |outline| layout for showing the
+outline of the talk (i.e.\ the sections and sub-sections) at the start of the
+presentation, a |nosidebar| layout which removes the side bar to make more
+space for content and a |notitle| layout which also removes the title of the
+slide.
 
 \DescribeMacro{\backgroundcolor}%
 \DescribeMacro{\sidebarcolor}%
 \DescribeMacro{\titlecolor}%
 \DescribeMacro{\sidebartitlecolor}%
 \DescribeMacro{\highlightcolor}%
-Colours can be set with the commands listed in \mref{table}{tab:colorcmds}.
-their syntax is
-\begin{quote}
-  |\|\var{color-command}|{|\var{red-value}|,|\var{green-value}|,|%
-     \var{blue-value}|}|
-\end{quote}
-where \var{color-command} is one of the commands listed in
-\mref{table}{tab:colorcmds} and \var{red-value}, \var{green-value} and
-\var{blue-value} are numbers between 0 and 1.
+The colours of the |talk-sidebars| style can be customised with the commands
+listed in \mref{table}{tab:colorcmds}. Their syntax is the same as for the
+|\titlecolor| command in |talk-simple|.
 \begin{table}
   \centering
   \begin{tabular}{lp{3in}}
@@ -259,11 +290,15 @@ and date of your talk with the commands
   |\author[|\var{short-author}|]{|\var{author}|}|\\
   |\date{|\var{date}|}|
 \end{quote}
-In what context the short versions \var{short-title} and \var{short-author} are
-used depends on the style package. The \pkg{sidebars} package displays
-\var{short-title} and \var{short-author} in the side bar.  Other style packages
-may also define addtitional commands, that allow you to specify additional
-information like institute, logo, place where the talk was given etc.
+\DescribeMacro{\maketitleslide} Style packages should define a
+|\maketitleslide| command which generates a title slide showing this
+information.  In what context the short versions \var{short-title} and
+\var{short-author} are used depends on the style package. The
+\pkg{talk-sidebars} package uses the long versions on the title slide but
+displays \var{short-title} and \var{short-author} in the side bar.  Other style
+packages may also define addtitional commands, that allow you to specify
+additional information like institute, logo, place where the talk was given
+etc.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -278,14 +313,13 @@ environments.
 The |slide| environment is the most important environment in the \pkg{talk}
 class.  It allows you to typeset the contents of your slides. Its syntax is:
 \begin{quote}
-  |\begin{slide}[|\var{style-name}|]{|\var{slide-title}|}|\\
+  |\begin{slide}[|\var{layout-name}|]{|\var{slide-title}|}|\\
   |  |\txt{(slide body)}\\  |\end{slide}|
 \end{quote}
 The \var{style-name} argument is optional. It must be the name of one of the
-slide styles defined in style package you have loaded. For the |sidebars|
-package the available slide styles are |plain|, |outline| and |normal|. If no
-\var{style-name} argument is given, \pkg{talk} uses the slide style specified in
-the last call of the |\slidestyle| command.
+layouts defined in style package you have loaded. If no \var{layout-name}
+argument is given, \pkg{talk} uses the layout specified in the last call of the
+|\layout| command.
 
 \DescribeMacro{notes}
 The |notes| environment allows you to include annotations to your slides in
@@ -295,15 +329,15 @@ compile your presentation in the |screen| or |slides| mode.
 \DescribeMacro{multislide}
 The |multislide| environment can be used to create overlays. Its syntax is:
 \begin{quote}
-  |\begin{multislide}[|\var{style-name}|]{|\var{sub-slides}|}|%
+  |\begin{multislide}[|\var{layout-name}|]{|\var{sub-slides}|}|%
                                         |{|\var{slide-title}|}|\\
   |  |\txt{(slide body)}\\
   |\end{multislide}|
 \end{quote}
-As for the |slide| environment the optional \var{style-name} argument and the
-\var{slide-title} argument specify the slide style and the slide title. The
+As for the |slide| environment the optional \var{layout-name} argument and the
+\var{slide-title} argument specify the layout and the slide title. The
 \var{sub-slides} argument has to be an integer number greater than zero. It
-specifies the number of sub-slides, that the |multislide| environment will
+specifies the number of sub-slides that the |multislide| environment will
 generate. In the body of the |multislide| environment, you can use the commands
 |\fromslide|, |\toslide| and |\onlyslide| to specify which material goes on
 which sub-slide. 
@@ -324,6 +358,58 @@ still uses up the space (pretty much like the |\phantom| command).
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Positioning Tools}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+Unlike ordinary text documents slides often contain many graphical elements or
+graphics and text in `non-standard' arrangements. Positioning these elements
+with standard \LaTeX commands can be challenging. The \pkg{talk} package
+provides a couple of positioning commands which make this task a bit easier.
+
+\DescribeMacro{\shiftbox} The |\shiftbox| command lets you freely position
+text and graphics relative to the \emph{current point} (i.e.\ the point on the
+current baseline where the next character would be inserted). The syntax is
+\begin{quote}
+  |\shiftbox[|\var{anchor}|]{|\var{x}|}{|\var{y}|}{|\var{material}|}|
+\end{quote}
+The \var{material} will be set in a horizontal box (like |\mbox|) and placed
+a horizontal distance \var{x} and a vertical distance \var{y} away from the
+current point. With the optional argument \var{anchor} you can specify which
+corner of the box containing \var{material} should be placed at that location.
+Use |tl| for the top-left corner, |br| for the bottom-right corner and |tr| or
+|bl| for the other two corners. Instead of a lowercase |b| you can also use an
+uppercase |B| to anchor at the baseline of the box containing \var{material}.
+The default for \var{anchor} is |Bl|.
+
+Note that the |\shiftbox| does not use up any space on the current line, i.e.\
+it does not move the current point. Thus, if you call |\shiftbox| multiple times
+in a row the relative positions of the boxes will be as you expect them to be.
+For example,
+\begin{quote}
+  |\shiftbox[bl]{1cm}{1mm}{foo}|\\
+  |\shiftbox[tl]{1cm}{-1mm}{bar}|
+\end{quote}
+will print `foo' and `bar' one centimetre to the right of the current point.
+The words will be left-aligned on top of each other with a 2\,mm vertical gap
+between them.
+
+The |\shiftbox| command gives you maximal freedom in the way you position
+things on the slide. But quite often you just want to show two things (e.g.\ a
+picture and some text) side by side. \DescribeMacro{\twocolumn} In this case it
+is simpler to use the |\twocolumn| command. The syntax is
+\begin{quote}
+  |\twocolumn[|\var{fraction}|]{|\var{valign}|}{|\var{left-material}|}{|\var{right-material}|}|
+\end{quote}
+This will show \var{left-material} in the left column and \var{right-material}
+in the right column. The command uses up the entire available horizontal space.
+The \var{valign} argument determines how the material in the two columns is
+vertically aligned. The possible values are |t| (top-aligned), |c| (centered)
+and |b| (bottom-aligned). The optional \var{fraction} argument lets you control
+the relative width of the columns. It defaults to 0.5, in which case the two
+columns have the same width.
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Title and Contents Pages}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -331,20 +417,16 @@ still uses up the space (pretty much like the |\phantom| command).
 Most talks begin with a title page showing the title of the talk, the name of
 the speaker and possibly additional information like the date and place where
 the talk is given, the institute of the speaker etc. For long talks you'll also
-want to show the stucture of your talk at the beginning.
+want to show an `outline' or `table of contents' of your talk at the beginning.
 
-\DescribeMacro{\maketitle}\DescribeMacro{\tableofcontents}
-Style packages for the \pkg{talk} class should therefore redefine the standard
-\LaTeX\ commands |\maketitle| and |\tableofcontents| in such a way that they
-produce suitable title and contents pages. These commands should be used in the
-body of a slide environment. For example, with the |sidebars| style package
-you would create title and contents pages by writing
-\begin{quote}
-  |\begin{slide}[plain]{}|\\
-  |  \maketitle|\\
-  |\end{slide}|
-\end{quote}
-and
+\DescribeMacro{\maketitleslide} Style packages for the \pkg{talk} class should
+define a |\maketitleslide| command which generates the title slide using the
+information specified with the |\title|, |\author| and |\date| (and possibly
+some other) commands.
+
+\DescribeMacro{\tableofcontents} Style packages may also redefine the standard
+\LaTeX\ command |\tableofcontents| in such a way that it produces a suitable
+table of contents. This command should be used in the body of a slide, e.g.
 \begin{quote}
   |\begin{slide}[outline]{Contents}|\\
   |  \tableofcontents|\\
@@ -384,11 +466,13 @@ care of more technical issues like
   \item magnifying and positioning the slides on the paper,
   \item creating overlays,
   \item keeping a table of contents that is accessible on every slide,
-  \item keeping a catalog of slide styles and allowing the user to switch
+  \item keeping a catalog of layouts and allowing the user to switch
     between them.
 \end{itemize}
-To exploit these features, a style package writer needs to know some basic facts
-about the inner workings of the \pkg{talk} class.
+To create your own \pkg{talk} style the best starting point is the file
+|talk-simple.sty|. It contains lots of comments which explain what is happening
+and give you tips for how to customise it. If you want a more structured
+explanation just continue reading.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -467,43 +551,38 @@ command. It calls |\theslide| when you are in a |slide| environment and
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Style Definitions}
+\subsection{Layouts}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 To change the look-and-feel of your slides you have to redefine some or all of
 the following commands:
 \begin{quote}
   |\@makeslide|\\
-  |\@makeslidebackground|\\
-  |\@makeslidecontent|\\
   |\@makenotesslide|\\
   |\@maketocsection|\\
   |\@maketocsubsection|
 \end{quote}
 These commands will be called by the |slide|, |multislide| and |notes|
 environments. Their exact meaning will be explained later on.
-\DescribeMacro{\@newslidestyle}
-To create a \emph{named} slide style, you have to wrap a |\@newslidestyle|
-command around your definitions. A typical style definition takes the form
+\DescribeMacro{\@newlayout} To create a layout you have to wrap a
+|\@newslidestyle| command around your definitions. A typical layout definition
+takes the form
 \begin{quote}
-  |\@newslidestyle{|\var{style-name}|}{|\\
+  |\@newlayout{|\var{layout-name}|}{|\\
   |  \renewcommand{\@makeslide}{|\var{stuff}|}|\\
-  |  \renewcommand{\@makeslidebackground}{|\var{stuff}|}|\\
-  |  \renewcommand{\@makeslidecontent}{|\var{stuff}|}|\\
-  |  \renewcommand{\@makenotesslide}{|\var{stuff}|}|\\
   |  \renewcommand{\@maketocsection}[3]{|\var{stuff}|}|\\
   |  \renewcommand{\@maketocsubsection}[4]{|\var{stuff}|}|\\
   |}|
 \end{quote}
 
-The |\@newslidestyle| command simply dumps its second argument into a macro
-called |\pres@sty@|\var{style-name}. When the style is loaded
-with |\slidestyle{|\var{style-name}|}| or with the optional argument of the
+The |\@newlayout| command simply dumps its second argument into a macro
+called |\talk@sty@|\var{layout-name}. When the layout is loaded
+with |\layout{|\var{layout-name}|}| or with the optional argument of the
 |slide| environment, all the |\@make|\ldots\ commands are reset to their default
-definitions. Then the macro |\pres@sty@|\var{style-name} is executed.
+definitions. Then the macro |\talk@sty@|\var{layout-name} is executed.
 
 Note that the |\renewcommand| calls in the second argument of |\@newslidestyle|
-appear in the definition of the |\pres@sty@|\var{style-name} command. Therefore
+appear in the definition of the |\talk@sty@|\var{style-name} command. Therefore
 the arguments of |\@maketocsection| and |\@maketocsubsection| have to be
 referenced with double hashes, for example
 \begin{quote}
@@ -511,7 +590,7 @@ referenced with double hashes, for example
   |  \renewcommand{\@maketocsection}[3]{Section ##1: ##3}|\\
   |}|  
 \end{quote}
-Single hashes would refer to the arguments of |\pres@sty@|\var{style-name}.
+Single hashes would refer to the arguments of |\talk@sty@|\var{style-name}.
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -524,61 +603,51 @@ The |slide| and |multislide| environments store the slide title in the macro
 the various |\@make|\ldots\ commands you can therefore use |\@slidetitle| and
 |\@slidebody| to insert the title and body of the current slide.
 
-\DescribeMacro{\@makeslide} All the graphical wizardry in \pkg{talk} is done by
-the \pkg{pgf} package.  To generate a slide the |slide| environment executes the
-macro |\@makeslide| inside a |pgfpicture| environment. Before the call to
-|\@makeslide| it executes several commands that set the bounding box of the
-picture to a box of width |\slidewidth| and height |\slideheight| and scales and
-rotates the picture in accordance with the on the compilation mode and class
-options. The |\@makeslide| macro should therefore expand to a sequence of valid
-\pkg{pgf} commands which draw the slide inside a box of width |\slidewidth| and
-height |\slideheight|, with the origin located at the lower-left corner.
-\DescribeMacro{\@slidebox} To obtain an LR box containing the properly
-scaled and rotated slide you can use the |\@slidebox| macro.
+\DescribeMacro{\@makeslide} To generate a slide the |slide| environment
+executes the macro |\@makeslide| inside a |\parbox| with width and height set
+to the dimensions of the slide. When |\@makeslide| is called the current point
+will always be in the upper left corner of the parbox. Thus, you can use the
+|\shiftbox| command to place graphical elements (e.g.\ a background image)
+and text elements (e.g.\ the slide title or body) using coordinates relative
+to the top-left corner of the slide. This is the method used in the
+|talk-simple.sty| and |talk-sidebars.sty| style packages.
 
-\DescribeMacro{\@makenotesslide}
-If you compile in the |notes| mode the |slide| and |multislide| environments
-call |\@makenotesslide| to insert the current slide. By default the
-|\@makenotesslide| command simply centers the |\@slidebox|
-horizontally:
-\begin{quote}
-  |\newcommand{\@makenotesslide}{|\\
-  |  \par\hspace*{\fill}\@slidebox\hspace*{\fill}\par|\\
-  |}|
-\end{quote}
-You can change this behaviour by redefining the |\@makenotesslide| command. For
-example, if you only want to print the title of each slide in your notes, you
-should include something like
+Before the
+call to |\@makeslide| it executes several commands that set the bounding box of
+the picture to a box of width |\slidewidth| and height |\slideheight| and
+scales and rotates the picture in accordance with the on the compilation mode
+and class options. The |\@makeslide| macro should therefore expand to a
+sequence of valid \pkg{pgf} commands which draw the slide inside a box of width
+|\slidewidth| and height |\slideheight|, with the origin located at the
+lower-left corner.  \DescribeMacro{\@slidebox} To obtain an LR box containing
+the properly scaled and rotated slide you can use the |\@slidebox| macro.
+
+\DescribeMacro{\@makenotesslide} If you compile in the |notes| mode the |slide|
+and |multislide| environments call |\@makenotesslide| to insert the current
+slide in the flowing text. By default the |\@makenotesslide| command simply
+centers the parbox containing the slide horizontally.  You can change this
+behaviour by redefining the |\@makenotesslide| command. For example, if you
+only want to print the title of each slide in your notes, you should include
+something like
 \begin{quote}
   |\renewcommand{\@makenotesslide}{|\\
   |  \begin{center}\textbf{\@slidetitle}\end{center}|\\
   |}|
 \end{quote}
-in your style definition.
+in your style definition. \DescribeMacro{\@slidebox} The parbox with the fully
+assembled slide can be accessed with the |\@slidebox| command. The default
+definition of |\@makenotesslide| is
+\begin{quote}
+  |\newcommand{\@makenotesslide}{|\\
+  |  \par\hspace*{\fill}\@slidebox\hspace*{\fill}\par|\\
+  |}|
+\end{quote}
 
-To change the way the slides appear in the |screen| and |slides| mode you could
-redefine the |\@makeslide| command. However, usually you'll want to draw the
-slide background with \pkg{pgf} and then typeset the contents of the slide in a
-minipage of width |\slidewidth| and height |\slideheight| placed on top of that
-picture.
-\DescribeMacro{\@makeslidebackground}\DescribeMacro{\@makeslidecontent}
-Therefore the \pkg{talk} class provides two macros |\@makeslidebackground| and
-|\@makeslidecontent| and a default definition for |\@makeslide| which does
-exactly the above: It executes |\@makeslidebackground| inside a |pgfpicture|
-environment, then covers the slide with a minipage of width |\slidewidth| and
-height |\slideheight| and then executes the |\@makeslidecontent| inside the
-minipage environment. Thus the |\@makeslidebackground| macro should expand to a
-series of \pkg{pgf} commands that draw the background of the slide, with the
-origin at the lower-left corner. The |\@makeslidecontent| macro should expand to
-whatever you want to put in the minipage. Here, you start with the current point
-in the upper left corner of the slide.
-
-In this way \pkg{talk} gives you complete artistic freedom in the design of your
-slides: It lets you define the macros that generate the slides while contents
-like the slide title and body are previously stored in macros like
-|\@slidetitle| and |\@slidebody|, so that you can insert them where you
-like. For completeness we now summarise all commands yielding user defined
-contents:
+Note how the \pkg{talk} gives you complete artistic freedom in the design of
+your slides: It lets you define the macros that generate the slides while
+contents like the slide title and body are previously stored in macros like
+|\@slidetitle| and |\@slidebody|, so that you can insert them where you like.
+For completeness we now summarise all commands yielding user defined contents:
 \begin{description}
   \item[\ccmd{slidetitle}] Title of the current slide.
   \item[\ccmd{slidebody}] Body of the current slide.
@@ -696,24 +765,51 @@ definitions remain local to the goup, so you don't have to worry about restoring
 the original definitions of |\@maketocsection| and |\@maketocsubsection|. A more
 sophisticated definition of the |\tableofcontents| command can be found in
 |sidebars.sty|.
-\newpage
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Paragraph Spacing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+The \pkg{talk} class and the accompanying style packages |talk-simple.sty| and
+|talk-sidebars.sty| make extensive use of the |\parbox| command and the
+|minipage| environment to position text elements. The standard definitions of
+these commands have the unfortunate property that they override the global
+setting for |\parskip| which controls the space inserted between paragraphs.
+You can set |\parskip| globally to something non-zero, but inside parboxes and
+minipages the separation between paragraphs will still be zero. (Try it out!)
+This behaviour may be acceptable in document classes like |article| where
+parboxes and minipages are only uses in exceptional circumstances, but becomes
+problematic when virtually all visible material lives inside a parbox or
+minipage. \DescribeMacro{\setparskip} To mitigate this \pkg{talk} provides the
+|\setparskip| command which sets the value of |\parskip| for all following
+paragraphs, including those inside parboxes or minipages. The syntax is
+\begin{quote}
+  |\setparskip{|\var{glue}|}|
+\end{quote}
+where \var{glue} is a glue item to be used to separate paragraphs. For example,
+the |talk-simple.sty| and |talk-sidebars.sty| packages use
+\begin{quote}
+  |\setparskip{1.5ex plus0.5ex minus0.5ex}|
+\end{quote}
 %
 %
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Contact}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %
 For comments, bug reports, feature requests or submitting style packages please
-email to
+raise an issue at
 \begin{quote}
-  |martin.wiebusch@gmx.net|
+  |https://github.com/mwiebusch78/talk|
 \end{quote}
 
 \bigskip
 \begin{flushright}
-  Martin Wiebusch, \today
+  Martin Wiebusch, \lastupdated
 \end{flushright}
 \end{document}
 

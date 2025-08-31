@@ -57,6 +57,24 @@
   \dp\@tempboxa=\z@%
   \leavevmode%
   \box\@tempboxa%
+  \ignorespaces%
+}
+
+% twocolumn macro
+%
+\renewcommand{\twocolumn}[4][0.5]{%
+  \@tempdimb=\textwidth%
+  \advance\@tempdimb by -\columnsep%
+  \@tempdima=#1\@tempdimb%
+  \advance\@tempdimb by -\@tempdima%
+  \begin{minipage}[#2]{\@tempdima}%
+    #3
+  \end{minipage}%
+  \hspace*{\columnsep}%
+  \begin{minipage}[#2]{\@tempdimb}%
+    #4
+  \end{minipage}%
+  \ignorespaces%
 }
 
 % title and author
@@ -76,8 +94,8 @@
 \newlength{\talk@vadjust}
 \newlength{\talk@pdfpaperwidth}
 \newlength{\talk@pdfpaperheight}
-\def\talk@currentslidestyle{}
-\def\talk@oldslidestyle{}
+\def\talk@currentlayout{}
+\def\talk@oldlayout{}
 \def\@slidetitle{}
 \def\@slidebody{}
 \long\def\talk@defslidebody#1{\long\gdef\@slidebody{#1}}
@@ -208,7 +226,7 @@
 \NewEnviron{slide}[2][\@empty]{%
   \refstepcounter{slide}%
   \ifx#1\@empty%
-    \csname talk@sty@\talk@currentslidestyle\endcsname%
+    \csname talk@sty@\talk@currentlayout\endcsname%
   \else%
     \csname talk@sty@#1\endcsname%
   \fi%
@@ -221,14 +239,14 @@
 
 % slide styles
 %
-\long\def\@newslidestyle#1#2{%
+\long\def\@newlayout#1#2{%
   \edef\@temp{#1}%
   \expandafter\gdef\csname talk@sty@\@temp\endcsname{%
     \talk@restoredefaults%
     #2%
   }%
 }
-\newcommand{\slidestyle}[1]{\gdef\talk@currentslidestyle{#1}}
+\newcommand{\layout}[1]{\gdef\talk@currentlayout{#1}}
 
 
 % slide and subslide numbering
@@ -328,7 +346,7 @@
 \NewEnviron{multislide}[3][\@empty]{%
   \refstepcounter{slide}%
   \ifx#1\@empty%
-    \csname talk@sty@\talk@currentslidestyle\endcsname%
+    \csname talk@sty@\talk@currentlayout\endcsname%
   \else%
     \csname talk@sty@#1\endcsname%
   \fi%
@@ -393,3 +411,11 @@
 \def\thempfootnote{\@arabic\c@mpfootnote}
 \let\thanks\footnote
 
+% setparskip command
+%
+\newlength{\talk@defaultparskip}
+\setlength{\talk@defaultparskip}{\parskip}
+\let\talk@oldparboxrestore\@parboxrestore
+\def\@parboxrestore{\talk@oldparboxrestore\parskip=\talk@defaultparskip}
+\newcommand{\setparskip}[1]{%
+  \setlength{\parskip}{#1}\setlength{\talk@defaultparskip}{\parskip}}
