@@ -4,9 +4,12 @@ INSTALLDIR=${HOME}/share/texmf/tex/latex
 
 SRC=\
 talk.cls \
-sidebars.sty \
+talk-sidebars.sty \
+talk-simple.sty \
 talkdoc.tex \
-example.tex
+sidebars-example.tex \
+simple-example.tex
+
 
 OTHER=\
 README
@@ -25,6 +28,7 @@ backup: $(MF) $(SRC) $(DOC) $(OTHER)
 	rm -f $(TAR)
 	tar zcvf $(TAR) $(MF) $(SRC) $(DOC) $(OTHER)
 
-install: talk.cls sidebars.sty
+install: talk.cls talk-sidebars.sty talk-simple.sty
 	install talk.cls $(INSTALLDIR)/talk.cls
-	install sidebars.sty $(INSTALLDIR)/sidebars.sty
+	install talk-sidebars.sty $(INSTALLDIR)/talk-sidebars.sty
+	install talk-simple.sty $(INSTALLDIR)/talk-simple.sty
