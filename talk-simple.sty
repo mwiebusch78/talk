@@ -66,7 +66,7 @@
         \vspace*{1.5em plus 1fil}%
         % Typeset the body in normal font with some extra space around
         % paragraphs.
-        {\parskip=1.5ex plus0.5ex minus0.5ex\@slidebody\par}%
+        {\@slidebody\par}%
         \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
@@ -78,8 +78,10 @@
 \@newlayout{notitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
-      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
-        \vspace*{\fill}\@slidebody\vspace*{\fill}%
+      \begin{minipage}[t][4.1\sim@unit][c]{7.6\sim@unit}%
+        \vspace*{\fill}%
+        \@slidebody%
+        \vspace*{\fill}%
       \end{minipage}%
     }%
   }%
@@ -91,7 +93,7 @@
 \@newlayout{onlytitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
-      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
+      \begin{minipage}[t][4.1\sim@unit][c]{7.6\sim@unit}%
         \vspace*{\fill}%
         \centering\color{sim@title}\LARGE\@slidetitle\par%
         \vspace*{\fill}%
@@ -130,9 +132,11 @@
 \layout{default}
 
 % Some final tweaks. Paragraph indentations don't look that great on slides,
-% so let's get rid of them. The \sloppy command tells TeX to be a bit more
+% so let's get rid of them. Instead we use \setparskip to insert some space
+% between paragraphs. The \sloppy command tells TeX to be a bit more
 % relaxed about overfull or underfull boxes.
 \setlength{\parindent}{0pt}
+\setparskip{1.5ex plus0.5ex minus0.5ex}
 \sloppy
 
 % Let's also redefine the \emph command to use red colour rather than italic
