@@ -6,22 +6,27 @@
 Abstract
 ========
 
-The talk document class allows you to create slides for screen
-presentations or printing on transparencies. It also allows you to print
-personal notes for your talk. You can create overlays and display structure
-information (current section / subsection, table of contents) on your slides.
-The main feature that distinguishes talk from other presentation classes like
-beamer or prosper is that it allows the user to define an arbitrary
-number of slide styles and switch between these styles from slide to
-slide. This way the slide layout can be adapted to the slide content. For
-example, the title or contents page of a talk can be given a slightly different
-layout than the other slides.
+The talk document class allows you to create slides for screen presentations or
+printing on transparencies. It also allows you to print personal notes for your
+talk. You can create overlays and display structure information (current
+section / subsection, table of contents) on your slides.  The main feature that
+distinguishes talk from other presentation classes like beamer, prosper or
+powerdot is that it allows the user to define an arbitrary number of layouts
+and switch between these layouts from slide to slide. For examle, the default
+layout of the talk-sidebars style shows a (navigatable) table of contents in a
+bar on the right side of each slide, but it also provides a nosidebar layout
+where the sidebar is removed to make space for more content. This way you can
+present information in different formats but still maintain a consistent design
+throughout your presentation.
 
-The talk class makes no restrictions on the slide design whatsoever. The entire
-look and feel of the presentation can be defined by the user. The style
+The talk class makes no restrictions on the slide design whatsoever.  The
+entire look and feel of the presentation can be defined by the user. The style
 definitions should be put in a separate sty file. Currently the package comes
-with only one set of pre-defined slide styles (greybars.sty). Contributions
-from people who are artistically more gifted than me are more than welcome!
+with two pre-defined slide styles: talk-simple.sty and talk-sidebars.sty.  The
+former is a simple design for short talks while the latter is better for longer
+seminars with content structured into sections and subsections.  Customising
+your presentation style is easy and talk-simple.sty contains lots of comments
+to guide you through the process.
 
 
 Requirements
@@ -29,10 +34,13 @@ Requirements
 
 The talk class requires the packages
 
-        amsmath,
-        pgf,
         multido,
-        hyperref.
+        graphicx,
+        pgf,
+        xstring,
+        environ.
+
+The talk-sidebars.sty package additionally requires hyperref.
 
 They can all be obtained from http://www.ctan.org. For further documentation see
 talkdoc.pdf.
@@ -74,3 +82,29 @@ v. 1.1:
 - \@makeslide is now executed inside a pgfpicture environment. Existing style
   packages may have to be adapted.
 
+v. 2.0:
+
+- Major package overhaul.
+
+- Slide styles have been renamed to 'layouts'.
+
+- Associated style packages are now prefixed with 'talk-', i.e. sidebars.sty
+  has become talk-sidebars.sty.
+
+- The sidebar in the talk-sidebars style is now navigatable.
+
+- A new style talk-simple.sty was added. This package can be used unaltered but
+  it also serves as a starting point for defining your own style. It contains
+  lots of comments explaining how to define and customise your own layouts.
+
+- The tight coupling with the pgf package has been removed. You can now
+  define custom layouts without using pgf at all.
+
+- Hyperlinks from the hyperref package now work without problems. 
+
+- \shiftbox and \twocolumn commands have been added to facilitate positioning.
+
+- \@makeslidecontent and \@makeslidebackground have been removed.
+
+- \setparskip command has been added which allows you to change the default
+  parskip in parboxes and minipages.
