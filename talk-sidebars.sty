@@ -40,6 +40,9 @@
 
 \@newlayout{default}{%
   \renewcommand{\@makeslide}{%
+    % Draw the background, including the sidebar. We use pgf here, but any other
+    % graphics package will work, too. You can also use \includegraphics if you
+    % have an image in a separate file.
     \shiftbox[tl]\z@\z@{%
       \begin{pgfpicture}
         \color{sb@bg}
@@ -52,6 +55,7 @@
         }%
       \end{pgfpicture}
     }%
+    % Fill the sidebar with table-of-contents information.
     \shiftbox[tl]{6.9\sb@unit}{-0.2\sb@unit}{%
       \begin{minipage}[t][4.1\sb@unit]{1\sb@unit}%
         \tiny%
@@ -61,15 +65,18 @@
         {\vfill\hspace*{\fill}p. \theslidelabel\hspace*{\fill}}%
       \end{minipage}%
     }%
+    % Typeset the slide title and body.
     \shiftbox[tl]{0.2\sb@unit}{-0.2\sb@unit}{%
-      \begin{minipage}[t][4.1\sb@unit]{6.4\sb@unit}%
+      \begin{minipage}[t][4.1\sb@unit][s]{6.4\sb@unit}%
         {\color{sb@title}\LARGE\@slidetitle\par}%
-        \vspace*{1.5em plus 1fill}%
-        \@slidebody\par%
-        \vspace*{0pt plus 1fill}%
+        \vspace*{1.5em plus 1fil}%
+        \@slidebody%
+        \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%
+  % Define the \@maketocsection and \@maketocsubsection commands so that
+  % the current (sub)section is highlighted.
   \renewcommand{\@maketocsection}[3]{%
     \raggedright\noindent%
     \@ifcurrentsection{##1}{%
@@ -102,6 +109,7 @@
   }%
 }
 
+% Same as before, but now we don't have a sidebar.
 \@newlayout{nosidebar}{%
   \renewcommand{\@makeslide}{%
     \shiftbox[tl]\z@\z@{%
@@ -115,16 +123,17 @@
       \end{pgfpicture}%
     }%
     \shiftbox[tl]{0.2\sb@unit}{-0.2\sb@unit}{%
-      \begin{minipage}[t][4.1\sb@unit]{7.6\sb@unit}%
+      \begin{minipage}[t][4.1\sb@unit][s]{7.6\sb@unit}%
         {\color{sb@title}\LARGE\@slidetitle\par}%
-        \vspace*{1.5em plus 1fill}%
-        \@slidebody\par%
-        \vspace*{0pt plus 1fill}%
+        \vspace*{1.5em plus 1fil}%
+        \@slidebody%
+        \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%
 }
 
+% Same as before, but now we remove the title as well.
 \@newlayout{notitle}{%
   \renewcommand{\@makeslide}{%
     \shiftbox[tl]\z@\z@{%
@@ -138,13 +147,17 @@
       \end{pgfpicture}%
     }%
     \shiftbox[tl]{0.2\sb@unit}{-0.2\sb@unit}{%
-      \begin{minipage}[t][4.1\sb@unit]{7.6\sb@unit}%
-        \vspace*{\fill}\@slidebody\vspace*{\fill}%
+      \begin{minipage}[t][4.1\sb@unit][s]{7.6\sb@unit}%
+        \vspace*{0pt plus 1fil}\@slidebody\vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%
 }
 
+% A layout with a centered title and thin bars on both sides of the slide.
+% No table-of-contents information is displayed automatically since this
+% should be included explicitly in the body (e.g. via the \tableofcontents
+% command).
 \@newlayout{outline}{%
   \renewcommand{\@makeslide}{%
     \shiftbox[tl]\z@\z@{%
@@ -163,8 +176,9 @@
     \shiftbox[tl]{0.8\sb@unit}{-0.2\sb@unit}{%
       \begin{minipage}[b][4.1\sb@unit][t]{6.4\sb@unit}%
         {\centering\LARGE\color{sb@title}\@slidetitle\par}%
-        \vspace*{1.5em plus 1fill}\@slidebody\par%
-        \vspace*{0pt plus 1fill}%
+        \vspace*{1.5em plus 1fil}%
+        \@slidebody%
+        \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%

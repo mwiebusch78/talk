@@ -92,15 +92,35 @@ them.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %
-The usage of the \pkg{talk} class is almost independent of the chosen style
-definitions. Therefore style definitions are most conveniently included through
-separate \emph{style packages}. Currently \pkg{talk} comes with one such file
-called |sidebars.sty|. (I hope that in the future the number of available style
-packages will grow due to contributions from people that are artistically more
-gifted than I am.) The issue of writing your own style definitions is discussed
-in \mref{section}{sec:styles}. In this section we will see how to create a
-presentation using the \pkg{talk} class and some ready-to-use style package like
-|sidebars.sty|.
+When using \pkg{talk} the visual `look and feel' of your presentation is
+determined by \emph{style package} which is separate from the core |talk|
+document class. Currently \pkg{talk} comes with two such packages called
+|talk-simple.sty| and |talk-sidebars.sty|. The former is a simple design for
+short talks while the latter is better for longer seminars with content
+structured into sections and subsections.
+
+To see the two built-in style packages in action take a look at the example
+files |simple-example.tex| and |sidebars-example.tex|. This will give you a
+good idea of how to use \pkg{talk} in practice. You may notice that the two tex
+files are actually quite similar. This is not accidental. The \pkg{talk}
+package defines a common interface so that, when writing your presentation, you
+can focus on content and do not have to worry about presentation. The visual
+aspects of the presentation are defined in the style file. One of the
+distinguishing features of \pkg{talk} is that style packages can define an
+arbitrary number of \emph{layouts}. The idea is that the layouts provided by a
+style package have consistent design but cater for slightly different types of
+content. For example, you may want a different layout for the slide where you
+show an outline of your talk, but it should still have the same colour scheme
+and fonts as the regular slides.
+
+As a \pkg{talk} user you are strongly encouraged to create your own styles by
+modifying one of the built-in style files. The file |talk-simple.sty| is a good
+starting point. It contains lots of comments and tips on how to customise it. A
+more in-depth guide to writing your own style file can be found in
+\mref{section}{sec:styles}. In this section we will discuss the common interface
+defined by the \pkg{talk}class, i.e.\ we will see how to create a
+presentation using the \pkg{talk} class and some ready-to-use style package
+like |talk-sidebars.sty|.
 
 \begin{figure}
   \begin{quote}

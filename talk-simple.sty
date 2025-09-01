@@ -58,15 +58,14 @@
     % use a single \shiftbox command to position the minipage some distance away
     % from the edges of the slide.
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
-      \begin{minipage}[t][4.1\sim@unit]{7.6\sim@unit}%
+      \begin{minipage}[t][4.1\sim@unit][s]{7.6\sim@unit}%
         % Typeset the title in large font and the desired color.
         {\parskip=0pt\color{sim@title}\LARGE\@slidetitle\par}%
         % Add some glue so that the body appears vertically centered
         % in the remaining space.
         \vspace*{1.5em plus 1fil}%
-        % Typeset the body in normal font with some extra space around
-        % paragraphs.
-        {\@slidebody\par}%
+        % Typeset the body
+        \@slidebody%
         \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
@@ -78,10 +77,10 @@
 \@newlayout{notitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
-      \begin{minipage}[t][4.1\sim@unit][c]{7.6\sim@unit}%
-        \vspace*{\fill}%
+      \begin{minipage}[t][4.1\sim@unit][s]{7.6\sim@unit}%
+        \vspace*{0pt plus 1fil}%
         \@slidebody%
-        \vspace*{\fill}%
+        \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%
@@ -93,10 +92,10 @@
 \@newlayout{onlytitle}{%
   \renewcommand{\@makeslide}{
     \shiftbox[tl]{0.2\sim@unit}{-0.2\sim@unit}{%
-      \begin{minipage}[t][4.1\sim@unit][c]{7.6\sim@unit}%
-        \vspace*{\fill}%
-        \centering\color{sim@title}\LARGE\@slidetitle\par%
-        \vspace*{\fill}%
+      \begin{minipage}[t][4.1\sim@unit][s]{7.6\sim@unit}%
+        \vspace*{0pt plus 1fil}%
+        \centering\parskip=0pt\color{sim@title}\LARGE\@slidetitle\par%
+        \vspace*{0pt plus 1fil}%
       \end{minipage}%
     }%
   }%

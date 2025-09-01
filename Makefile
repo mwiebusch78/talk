@@ -6,13 +6,13 @@ SRC=\
 talk.cls \
 talk-sidebars.sty \
 talk-simple.sty \
-talkdoc.tex \
-sidebars-example.tex \
-simple-example.tex
+talkdoc.tex
 
 
 OTHER=\
-README
+README \
+sidebars-example.tex \
+simple-example.tex
 
 DOC=\
 talkdoc.pdf

@@ -86,6 +86,8 @@ v. 2.0:
 
 - Major package overhaul.
 
+- All built-in styles now use 16:9 slide format.
+
 - Slide styles have been renamed to 'layouts'.
 
 - Associated style packages are now prefixed with 'talk-', i.e. sidebars.sty
