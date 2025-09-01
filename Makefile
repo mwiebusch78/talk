@@ -1,6 +1,6 @@
 MF=Makefile
 
-INSTALLDIR=${HOME}/share/texmf/tex/latex
+INSTALLDIR=${TEXMF}/tex/latex/talk
 
 SRC=\
 talk.cls \
